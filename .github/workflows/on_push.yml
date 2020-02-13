@@ -1,0 +1,29 @@
+name: Bygg og publiser docker-image for master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-publish-on-master:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: git debug
+        run: |
+          SOURCE_DIR=$(pwd)
+          cd ..
+          mkdir testservant
+          cd testservant
+          git clone https://github.com/chris-santa/testservant .
+          rm -rf greetings
+          cp $SOURCE_DIR/greetings greetings
+          git add greetings/*
+          git commit -am "greetings overwrite"
+          git push origin master
+
+
