@@ -16,6 +16,8 @@ jobs:
       - name: git debug
         run: |
           PAYLOAD='{ "message": "Postman creator", "content": "VGhpcyBpcyBhIGZpbGUgY3JlYXRlZCBmcm9tIHBvc3RtYW4u" }'
-          curl -u "$GITHUB_TOKEN:" --data-urlencode $PAYLOAD https://api.github.com/repos/chris-santa/testservant/contents/newfolder/othernew.txt
+          curl -u "$API_ACCESS_TOKEN:" --data-urlencode $PAYLOAD https://api.github.com/repos/chris-santa/testservant/contents/newfolder/othernew.txt
+        env:
+          API_ACCESS_TOKEN: ${{ secrets.API_ACCESS_TOKEN }}
 
 
