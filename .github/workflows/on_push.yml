@@ -23,9 +23,9 @@ jobs:
           rm -rf greetings
           cp -r $SOURCE_DIR/greetings greetings
           git add greetings/*
-          git commit -am "greetings overwrite"
           git config user.name "Team Personbruker CI"
           git config user.email "personbruker@nav.no"
+          git commit -am "greetings overwrite"
           git push origin master
 
 
