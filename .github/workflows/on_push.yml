@@ -19,7 +19,7 @@ jobs:
           cd ..
           mkdir testservant
           cd testservant
-          git clone https://github.com/chris-santa/testservant .
+          git clone https://$GITHUB_TOKEN:x-oauth-basic@github.com/chris-santa/testservant .
           rm -rf greetings
           cp -r $SOURCE_DIR/greetings greetings
           git add greetings/*
