@@ -21,7 +21,7 @@ jobs:
           cd testservant
           git clone https://github.com/chris-santa/testservant .
           rm -rf greetings
-          cp $SOURCE_DIR/greetings greetings
+          cp -r $SOURCE_DIR/greetings greetings
           git add greetings/*
           git commit -am "greetings overwrite"
           git push origin master
