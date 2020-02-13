@@ -15,8 +15,6 @@ jobs:
 
       - name: git debug
         run: |
-          git config user.name "Team Personbruker CI"
-          git config user.email "personbruker@nav.no"
           SOURCE_DIR=$(pwd)
           cd ..
           mkdir testservant
@@ -26,6 +24,8 @@ jobs:
           cp -r $SOURCE_DIR/greetings greetings
           git add greetings/*
           git commit -am "greetings overwrite"
+          git config user.name "Team Personbruker CI"
+          git config user.email "personbruker@nav.no"
           git push origin master
 
 
