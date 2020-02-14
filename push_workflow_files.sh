@@ -13,7 +13,7 @@ function createNode {
   )
 }
 
-if [[ $1 =~ ".+/.+" ]]; then
+if [[ $1 =~ "/" ]]; then
   REPOSITORY=$1
 else
   REPOSITORY="navikt/$1"
