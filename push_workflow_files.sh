@@ -60,8 +60,6 @@ PUSH_COMMIT_PAYLOAD=$(jq -n -c \
                       '{ sha: $sha, force: false }'
 )
 
-echo hello3
-
 HEAD_SHA=$(curl -s -X PATCH -u "$API_ACCESS_TOKEN:" --data "$PUSH_COMMIT_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
 echo "$REPOSITORY is now on commit $HEAD_SHA"
