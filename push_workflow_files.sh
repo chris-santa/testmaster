@@ -19,6 +19,8 @@ else
   REPOSITORY="navikt/$1"
 fi
 
+echo "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master"
+
 curl -s "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master"
 
 BASE_TREE_SHA=$(curl -s "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
