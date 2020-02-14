@@ -62,4 +62,4 @@ PUSH_COMMIT_PAYLOAD=$(jq -n -c \
                       '{ sha: $sha, force: false }'
 )
 
-curl -s -X PATCH -u "$API_ACCESS_TOKEN:" --data "$PUSH_COMMIT_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" #| /dev/null 2>&1
+curl -s -X PATCH -u "$API_ACCESS_TOKEN:" --data "$PUSH_COMMIT_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master"
