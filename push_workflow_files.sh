@@ -34,14 +34,14 @@ for file in "./$WORKFLOW_DIRECTORY"/*; do
   NEW_FILE_SHA=$(git hash-object $file)
 
 
-  if [[ $EXISTING_FILE_SHA != $NEW_FILE_SHA  ]]; then
+  if [[ $EXISTING_FILE_SHA != $NEW_FILE_SHA ]]; then
     TREE_NODES="$TREE_NODES$(createNode $file),"
   fi
 done
 
 
 ## Exit if no changes are to be made
-if [[ -z $TREE_NODES]]; then
+if [[ -z $TREE_NODES ]]; then
   echo "Project $REPOSITORY is already up-to-date"
   exit 0
 fi
