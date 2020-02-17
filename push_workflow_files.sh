@@ -13,17 +13,8 @@ function createNode {
   )
 }
 
-
-## Assume owner is navikt unless otherwise specified
-if [[ $1 =~ "/" ]]; then
-  export REPOSITORY=$1
-else
-  export REPOSITORY="navikt/$1"
-fi
-
-
 ## Get latest commit sha on master
-export BASE_TREE_SHA=$(curl -s "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
+export BASE_TREE_SHA=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
 EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
 
@@ -47,7 +38,7 @@ if [[ -z $TREE_NODES ]]; then
 fi
 
 
-## Remove trailing comma
+## Remove trailing comma and wrap in square brackets
 TREE_NODES="[$(echo $TREE_NODES | sed 's/,$//')]"
 
 
@@ -62,7 +53,7 @@ CREATE_TREE_PAYLOAD=$(echo $CREATE_TREE_PAYLOAD | jq -c '.tree = '"$TREE_NODES")
 UPDATED_TREE_SHA=$(curl -s -X POST -u "$API_ACCESS_TOKEN:" --data "$CREATE_TREE_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/trees" | jq -r '.sha')
 
 
-## Create commit based on new tree
+## Create commit based on new tree, keep new tree ref
 CREATE_COMMIT_PAYLOAD=$(jq -n -c \
                         --arg message "Files distributed from $GITHUB_REPOSITORY, version $GITHUB_SHA" \
                         --arg tree $UPDATED_TREE_SHA \
@@ -86,5 +77,6 @@ PUSH_COMMIT_PAYLOAD=$(jq -n -c \
 )
 
 HEAD_SHA=$(curl -s -X PATCH -u "$API_ACCESS_TOKEN:" --data "$PUSH_COMMIT_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
+
 
 echo "$REPOSITORY is now on commit $HEAD_SHA"

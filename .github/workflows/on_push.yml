@@ -19,7 +19,9 @@ jobs:
         env:
           API_ACCESS_TOKEN: ${{ secrets.API_ACCESS_TOKEN }}
           WORKFLOW_DIRECTORY: "common_workflows"
-          REPOSITORIES: "chris-santa/testservant chris-santa/testmaster"
+          TEAM: "personbruker"
+          INCLUDE: "chris-santa/testservant"
+          EXCLUDE: "varselinnboks saksoversikt"
 
 
 
