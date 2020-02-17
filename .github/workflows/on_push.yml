@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Distribute workflowies
+      - name: Distribute workflows
         run: |
           ./distribute_workflows.sh
         env:
