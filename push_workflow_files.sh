@@ -4,7 +4,7 @@ IFS=
 
 ### Create new tree
 function createNode {
-  WORKFLOW_FILE_NAME=$(echo $1 | rev | cut -f1 -d"/" | rev)
+  WORKFLOW_FILE_NAME=$(basename -- $1)
   CONTENT=$(cat $1)
   echo $(jq -n -c \
               --arg path ".github/workflows/$WORKFLOW_FILE_NAME" \
@@ -13,20 +13,45 @@ function createNode {
   )
 }
 
+
+## Assume owner is navikt unless otherwise specified
 if [[ $1 =~ "/" ]]; then
-  REPOSITORY=$1
+  export REPOSITORY=$1
 else
-  REPOSITORY="navikt/$1"
+  export REPOSITORY="navikt/$1"
 fi
 
-BASE_TREE_SHA=$(curl -s "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
+## Get latest commit sha on master
+export BASE_TREE_SHA=$(curl -s "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
+
+EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
+
+## Iterate through workflow folder and only include those that differ from target workflows
 for file in "./$WORKFLOW_DIRECTORY"/*; do
-  TREE_NODES="$TREE_NODES$(createNode $file),"
+
+  EXISTING_FILE_SHA=$(echo $EXISTING_WORKFLOWS | jq -r '.[] | select(.path == "'"$(basename -- $file)"'").sha')
+  NEW_FILE_SHA=$(git hash-object $file)
+
+
+  if [[ $EXISTING_FILE_SHA != $NEW_FILE_SHA  ]]; then
+    TREE_NODES="$TREE_NODES$(createNode $file),"
+  fi
 done
 
+
+## Exit if no changes are to be made
+if [[ -z $TREE_NODES]]; then
+  echo "Project $REPOSITORY is already up-to-date"
+  exit 0
+fi
+
+
+## Remove trailing comma
 TREE_NODES="[$(echo $TREE_NODES | sed 's/,$//')]"
 
+
+## Create new tree on remote and keep its ref
 CREATE_TREE_PAYLOAD=$(jq -n -c \
                       --arg base_tree $BASE_TREE_SHA \
                       '{ base_tree: $base_tree, tree: [] }'
