@@ -1,0 +1,20 @@
+name: Show deploy buttons on pull request
+
+on:
+  pull_request:
+    paths-ignore:
+      - .github/common_workflows/**
+
+jobs:
+  post-deploy-buttons:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v2
+
+      - name: Vis deploy-knapper i slack
+        uses: navikt/deploy-trigger-slack-integration@v1
+        with:
+          preprod_environments: "q0 q1 q6"
+          slack_channel: "#dittnav-deploy-actions"
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
