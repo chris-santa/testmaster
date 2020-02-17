@@ -34,7 +34,6 @@ jobs:
           echo git push origin $TAG
 
       - name: Vis deploy-knapper i slack
-        if: secrets.WEBHOOK_URL != ''
         uses: navikt/deploy-trigger-slack-integration@v1
         with:
           preprod_environments: "q0 q1 q6"
