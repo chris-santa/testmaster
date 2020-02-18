@@ -58,7 +58,7 @@ UPDATED_TREE_SHA=$(curl -s -X POST -u "$API_ACCESS_TOKEN:" --data "$CREATE_TREE_
 
 ## Create commit based on new tree, keep new tree ref
 CREATE_COMMIT_PAYLOAD=$(jq -n -c \
-                        --arg message "Files distributed from $GITHUB_REPOSITORY, version $GITHUB_SHA" \
+                        --arg message "Sent from $GITHUB_REPOSITORY, version $GITHUB_SHA" \
                         --arg tree $UPDATED_TREE_SHA \
                         --arg name "Personbruker Workflow Authority" \
                         --arg email "personbruker@nav.no" \
