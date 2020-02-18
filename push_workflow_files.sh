@@ -24,7 +24,11 @@ EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
 ## Iterate through workflow folder and only include those that differ from target workflows
 for file in ./.github/workflows/__DISTRIBUTED_*; do
 
+  echo $file
+
   TARGET_FILE_NAME=$(basename -- $file | sed 's/__DISTRIBUTED_//g')
+
+  echo $TARGET_FILE_NAME
 
   EXISTING_FILE_SHA=$(echo $EXISTING_WORKFLOWS | jq -r '.[] | select(.path == "'"$TARGET_FILE_NAME"'").sha')
   NEW_FILE_SHA=$(git hash-object $file)
@@ -40,8 +44,6 @@ if [[ -z $TREE_NODES ]]; then
   echo "Project $REPOSITORY is already up-to-date"
   exit 0
 fi
-
-echo $TREE_NODES
 
 ## Remove trailing comma and wrap in square brackets
 TREE_NODES="[$(echo $TREE_NODES | sed 's/,$//')]"
@@ -80,6 +82,8 @@ PUSH_COMMIT_PAYLOAD=$(jq -n -c \
                       --arg sha $UPDATED_COMMIT_SHA \
                       '{ sha: $sha, force: false }'
 )
+
+
 
 HEAD_SHA=$(curl -s -X PATCH -u "$API_ACCESS_TOKEN:" --data "$PUSH_COMMIT_PAYLOAD" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
