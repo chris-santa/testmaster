@@ -17,7 +17,7 @@ jobs:
       - name: 'Sjekk ut koden for dette repo-et'
         uses: 'actions/checkout@v2'
 
-      - name: 'Sjekker ut en branch-en det ønskes å lage et docker-image for'
+      - name: 'Sjekker ut en branch-en det ønskes å lage et docker-ima  ge for'
         run: |
           git fetch --no-tags --prune origin +refs/heads/*:refs/remotes/origin/*
           git checkout $BRANCH
