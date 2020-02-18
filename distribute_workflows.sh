@@ -29,10 +29,9 @@ done
 
 ## Distribute files for each project
 for repository in $REPOSITORIES; do
-  echo $repository
-#  if [[ $repository == $GITHUB_REPOSITORY || "navikt/$repository" == $GITHUB_REPOSITORY ]]; then
-#    echo "Should not distribute files to same repository. Skipping $repository"
-#  else
-#    ./push_workflow_files.sh $repository
-#  fi
+  if [[ $repository == $GITHUB_REPOSITORY || "navikt/$repository" == $GITHUB_REPOSITORY ]]; then
+    echo "Should not distribute files to same repository. Skipping $repository"
+  else
+    ./push_workflow_files.sh $repository
+  fi
 done
