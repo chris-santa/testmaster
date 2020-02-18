@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: distribute-workflows
 
+env:
+  DRY_RUN: ${{ github.event.client_payload.dry_run }}
+
 jobs:
   build-and-publish-on-master:
     runs-on: ubuntu-latest
@@ -16,7 +19,6 @@ jobs:
           ./distribute_workflows.sh
         env:
           API_ACCESS_TOKEN: ${{ secrets.API_ACCESS_TOKEN }}
-          DRY_RUN: "true"
           TEAM_NAME: ""
           INCLUDE: "chris-santa/testservant"
           EXCLUDE: ""
