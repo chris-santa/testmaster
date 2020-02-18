@@ -18,7 +18,7 @@ jobs:
       - name: 'Sjekk ut koden for dette repo-et'
         uses: 'actions/checkout@v2'
 
-      - name: 'Sjekker ut commit-en tilhørende imaget som skal deploy-es, for å få tak i riktig versjon av nais-mainifetene'
+      - name: 'Sjekker ut commiten tilhørende imaget som skal deploy-es, for å få tak i riktig versjon av nais-mainifetene'
         run: |
           echo "Henter ut alle branch-er"
           git fetch --no-tags --prune origin +refs/heads/*:refs/remotes/origin/*
