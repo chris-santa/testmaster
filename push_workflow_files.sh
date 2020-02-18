@@ -16,6 +16,7 @@ function createNode {
 ## Get latest commit sha on master
 export BASE_TREE_SHA=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
+echo $REPOSITORY
 
 ## Find existing workflows in target repository
 EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
@@ -24,11 +25,7 @@ EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
 ## Iterate through workflow folder and only include those that differ from target workflows
 for file in ./.github/workflows/__DISTRIBUTED_*; do
 
-  echo $file
-
   TARGET_FILE_NAME=$(basename -- $file | sed 's/__DISTRIBUTED_//g')
-
-  echo $TARGET_FILE_NAME
 
   EXISTING_FILE_SHA=$(echo $EXISTING_WORKFLOWS | jq -r '.[] | select(.path == "'"$TARGET_FILE_NAME"'").sha')
   NEW_FILE_SHA=$(git hash-object $file)
