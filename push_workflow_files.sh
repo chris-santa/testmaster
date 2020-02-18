@@ -41,6 +41,7 @@ if [[ -z $TREE_NODES ]]; then
   exit 0
 fi
 
+echo $TREE_NODES
 
 ## Remove trailing comma and wrap in square brackets
 TREE_NODES="[$(echo $TREE_NODES | sed 's/,$//')]"

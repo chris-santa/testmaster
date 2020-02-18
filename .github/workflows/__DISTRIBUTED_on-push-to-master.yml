@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths-ignore:
-      - .github/common_workflows/**
+      - .github/workflows/**
 
 jobs:
   build-and-publish-on-master:
