@@ -4,7 +4,7 @@ IFS=
 
 ### Create new tree
 function createNode {
-  WORKFLOW_FILE_NAME=$(basename -- $1)
+  WORKFLOW_FILE_NAME=$(basename -- $1 | sed 's/__DISTRIBUTED_//g')
   CONTENT=$(cat $1)
   echo $(jq -n -c \
               --arg path ".github/workflows/$WORKFLOW_FILE_NAME" \
@@ -16,14 +16,18 @@ function createNode {
 ## Get latest commit sha on master
 export BASE_TREE_SHA=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/repos/$REPOSITORY/git/refs/heads/master" | jq -r '.object.sha')
 
+
+## Find existing workflows in target repository
 EXISTING_WORKFLOWS=$(./find_existing_workflows.sh)
 
+
 ## Iterate through workflow folder and only include those that differ from target workflows
-for file in "./$WORKFLOW_DIRECTORY"/*; do
+for file in ./.github/workflows/__DISTRIBUTED_*; do
 
-  EXISTING_FILE_SHA=$(echo $EXISTING_WORKFLOWS | jq -r '.[] | select(.path == "'"$(basename -- $file)"'").sha')
+  TARGET_FILE_NAME=$(basename -- $file | sed 's/__DISTRIBUTED_//g')
+
+  EXISTING_FILE_SHA=$(echo $EXISTING_WORKFLOWS | jq -r '.[] | select(.path == "'"$TARGET_FILE_NAME"'").sha')
   NEW_FILE_SHA=$(git hash-object $file)
-
 
   if [[ $EXISTING_FILE_SHA != $NEW_FILE_SHA ]]; then
     TREE_NODES="$TREE_NODES$(createNode $file),"

@@ -3,8 +3,6 @@ name: Deploy og bygg docker-image
 on:
   repository_dispatch:
     types: deploy-new-image
-    paths-ignore:
-      - .github/common_workflows/**
 
 env:
   BRANCH: ${{ github.event.client_payload.branch }}

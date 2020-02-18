@@ -20,8 +20,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo Hello World
-
       - name: Bygg, tag og push Docker image
         uses: navikt/pb-common-gh-actions/docker-publish@v0.2
         with:

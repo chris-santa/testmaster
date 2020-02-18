@@ -3,8 +3,6 @@ name: Deploy eksisterende versjon
 on:
   repository_dispatch:
     types: deploy
-    paths-ignore:
-      - .github/common_workflows/**
 
 env:
   VERSION: ${{ github.event.client_payload.version }}

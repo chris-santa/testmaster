@@ -1,8 +1,12 @@
 #!/bin/bash
 
-TEAM_SLUG=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/orgs/navikt/teams/$TEAM_NAME" | jq -r '.slug')
+## Get list of repositories owned by given team
+if [[ ! -z $TEAM_NAME ]]; then
+  TEAM_SLUG=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/orgs/navikt/teams/$TEAM_NAME" | jq -r '.slug')
 
-TEAM_REPOSITORIES=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/orgs/navikt/teams/$TEAM_SLUG/repos" | jq -r '.[] | .full_name')
+  TEAM_REPOSITORIES=$(curl -s -u "$API_ACCESS_TOKEN:" "https://api.github.com/orgs/navikt/teams/$TEAM_SLUG/repos" | jq -r '.[] | .full_name')
+fi
+
 
 
 ## Add 'navikt/..' to included repositories unless different owner is specified
@@ -10,7 +14,7 @@ if [[ ! -z $INCLUDE ]]; then
   REPOSITORIES=$(echo "$INCLUDE" | tr ' ' '\n' | sed 's/\(^[^\/]*$\)/navikt\/\1/g')
 fi
 
-## Combine unique repositories
+## Concatenate lists and filter duplicates
 REPOSITORIES=$(echo -e "$REPOSITORIES\n$TEAM_REPOSITORIES" | sort | uniq)
 
 
