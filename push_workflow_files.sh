@@ -39,11 +39,11 @@ done
 ## Print status and exit if dry run
 if [[ $DRY_RUN == "true" ]]; then
   if [[ -z $FILES_TO_UPDATE ]]; then
-    echo "Dry run for repository $REPOSITORY: No workflow files would have been added or changed."
+    echo "Dry run for $REPOSITORY: No workflow files would have been added or changed."
     exit 0
   else
-    FILES_LIST="[$(echo FILES_TO_UPDATE | sed 's/, $//')]"
-    echo "Dry run for repository $REPOSITORY: These files would have been added or changed $FILES_LIST"
+    FILES_LIST="[$(echo $FILES_TO_UPDATE | sed 's/, $//')]"
+    echo "Dry run for $REPOSITORY: These files would have been added or changed $FILES_LIST"
     exit 0
   fi
 fi
