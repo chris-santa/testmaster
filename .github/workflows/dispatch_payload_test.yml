@@ -1,4 +1,4 @@
-name: Publiser workflows til andre repoer
+name: Test
 
 on:
   repository_dispatch:
@@ -16,12 +16,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Echome
-        if:  env.VERSION = ~ ^[0-9]{14}-.{7}$
+        if: env.VERSION =~ ^[0-9]{14}-.{7}$
         run: |
           echo $VERSION
 
       - name: Echoyou
-        if: ! -z env.DRY_RUN
+        if: env.DRY_RUN != ""
         run: |
           echo $DRY_RUN
 
