@@ -1,0 +1,30 @@
+name: Publiser workflows til andre repoer
+
+on:
+  repository_dispatch:
+    types: test-dispatch
+
+env:
+  DRY_RUN: ${{ github.event.client_payload.dry_run }}
+  VERSION: ${{ github.event.client_payload.version }}
+
+jobs:
+  build-and-publish-on-master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Echome
+        if:  env.VERSION = ~ ^[0-9]{14}-.{7}$
+        run: |
+          echo $VERSION
+
+      - name: Echoyou
+        if: ! -z env.DRY_RUN
+        run: |
+          echo $DRY_RUN
+
+
+
+
