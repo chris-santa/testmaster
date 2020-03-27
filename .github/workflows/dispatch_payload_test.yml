@@ -16,12 +16,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Echome
-        if: env.VERSION != ""
+        if: env.VERSION != ''
         run: |
           echo $VERSION
 
       - name: Echoyou
-        if: env.DRY_RUN != ""
+        if: env.DRY_RUN != ''
         run: |
           echo $DRY_RUN
 
