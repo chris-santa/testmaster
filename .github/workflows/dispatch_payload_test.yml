@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Echome
-        if: env.VERSION =~ ^[0-9]{14}-.{7}$
+        if: env.VERSION != ""
         run: |
           echo $VERSION
 
